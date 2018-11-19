@@ -48,8 +48,8 @@ class App extends Component {
          <Movie title={movieTitles[3]} poster={movieImages[3]} />
          */}
 
-         {movies.map(movie =>{
-           return <Movie title={movie.title} poster={movie.poster} />
+         {movies.map((movie, index) =>{  // key값으로 index를 준다. index 0부터 시작
+           return <Movie title={movie.title} poster={movie.poster} key={index} />
          })}
 
          {/*
