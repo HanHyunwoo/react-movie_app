@@ -41,36 +41,26 @@ class App extends Component {
   // Render : componentWillMount() -> render() -> componentDidMount()
   // Update : componentWillReceiveProps() -> shouldComponentUpdate() -> componentWillUpdate() -> render() -> componentDidUpdate()
 
-  // 컴포넌트가 새로운 props를 받았다.
-  componentWillReceiveProps(){}
-
-  // 리액트는 old props, 새로운 props를 살펴보고 props가 다르면 리액트는 '업데이트==true'라고 생각한다.
-  shouldComponentUpdate(){}
-
-  // 업데이트를 한다. 예를 들어 어플리케이션에 '빙긍빙글 돌아가는 spinner'를 붙일 수가 있다.
-  componentWillUpdate(){}
-
-  // 업데이트 이후에는 돌고 있던 '로딩 중'메시지나 아이콘을 숨긴다.
-  componentDidUpdate(){}
-
-
-//----------------------------------------------------------------------------------
-
-  // 컴포넌트 싸이클이 시작되었다
-  componentWillMount(){
-    console.log('will mount')
+  //state : 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있다, 리액트 컴포넌트 안에 있는 Object이다.
+  state = {
+    greeting: 'Hello!'
   }
 
-  // 컴포넌트가 성공적으로 리액트 세계에 자리 잡았음을 알게되었다.
+  // 컴포넌트가 mount할 때마다, greeting을 Hello again! 으로 변경한다
   componentDidMount(){
-    console.log('did mount')
+    setTimeout(() => {  //컴포넌트가 mount되면 2초를 기다리고 , greeting를 업데이트 한다.
+       this.setState({  // this.state.greeting = 'something'  <- X, state를 직접적으로 써서 변경하면 안됨,
+         greeting: 'Hello again!'
+       })
+    }, 2000) //2초
   }
 
   // 컴포넌트가 리액트 세계에 '존재'하게 되었음을 알게되었다.
   render() {
-    console.log('did render')
+    //console.log('did render')
     return (
       <div className="App">
+        {this.state.greeting}
 
          {/*
          <Movie title={movieTitles[0]} poster={movieImages[0]} />
