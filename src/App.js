@@ -8,36 +8,39 @@ class App extends Component {
   // Update : componentWillReceiveProps() -> shouldComponentUpdate() -> componentWillUpdate() -> render() -> componentDidUpdate()
 
   //state : 컴포넌트 내부에서 선언하며 내부에서 값을 변경 할 수 있다, 리액트 컴포넌트 안에 있는 Object이다.
-  state = {
-  }
+  state = {}
+  // componentDidMount(){
+  //   setTimeout(() => {  // = setTimeout(function() {  컴포넌트가 mount되면 3초를 기다리고, movies 내용 추가
+  //     this.setState({
+  //       movies: [
+  //         {
+  //           title: "Matrix",
+  //           poster: "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg"
+  //         },
+  //         {
+  //           title: "Full Metal Jacket",
+  //           poster: "https://images-na.ssl-images-amazon.com/images/I/41MN0ANVJTL.jpg"
+  //         },
+  //         {
+  //           title: "Oldboy",
+  //           poster: "https://www.nautiljon.com/images/asian-movie/00/23/old_boy_132.jpg"
+  //         },
+  //         {
+  //           title: "Star Wars",
+  //           poster: "https://vignette.wikia.nocookie.net/starwars/images/c/c5/Lego-all-stars-promo.jpg/revision/latest?cb=20181026172220"
+  //         },
+  //         {
+  //           title: "Trainspotting",
+  //           poster: "https://resizing.flixster.com/Yqx4Y2kFbZGsvo4vc_VQaamlPiw=/300x300/v1.bjs1NTQ3OTM7ajsxNzg3MTsxMjAwOzIwMDA7MTMzMQ"
+  //         }
+  //       ]
+  //     })
+  //   }, 3000) //3초
+  // }
 
+  // https://yts.am/api(YTS토렌트 영화)에서 데이터베이스를 가져올거임
   componentDidMount(){
-    setTimeout(() => {  // = setTimeout(function() {  컴포넌트가 mount되면 3초를 기다리고, movies 내용 추가
-      this.setState({
-        movies: [
-          {
-            title: "Matrix",
-            poster: "https://upload.wikimedia.org/wikipedia/en/c/c1/The_Matrix_Poster.jpg"
-          },
-          {
-            title: "Full Metal Jacket",
-            poster: "https://images-na.ssl-images-amazon.com/images/I/41MN0ANVJTL.jpg"
-          },
-          {
-            title: "Oldboy",
-            poster: "https://www.nautiljon.com/images/asian-movie/00/23/old_boy_132.jpg"
-          },
-          {
-            title: "Star Wars",
-            poster: "https://vignette.wikia.nocookie.net/starwars/images/c/c5/Lego-all-stars-promo.jpg/revision/latest?cb=20181026172220"
-          },
-          {
-            title: "Trainspotting",
-            poster: "https://resizing.flixster.com/Yqx4Y2kFbZGsvo4vc_VQaamlPiw=/300x300/v1.bjs1NTQ3OTM7ajsxNzg3MTsxMjAwOzIwMDA7MTMzMQ"
-          }
-        ]
-      })
-    }, 3000) //3초
+    console.log(fetch('https://yts.am/api/v2/list_movies.json?sort_by=rating'))
   }
 
   _renderMovies = () => {   // 함수앞에 _ 붙이는 이유 : 리액트 자체 함수가 많기 때문에 자신이 만든 함수랑 구분 짓기 위해서임
