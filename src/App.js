@@ -40,7 +40,14 @@ class App extends Component {
 
   // https://yts.am/api(YTS토렌트 영화)에서 데이터베이스를 가져올거임
   componentDidMount(){
-    console.log(fetch('https://yts.am/api/v2/list_movies.json?sort_by=rating'))
+    fetch('https://yts.am/api/v2/list_movies.json?sort_by=like_count') // fetch : url을 AJAX로 간단하게 불러올 수 있어서 좋음
+
+    // then()은 위의 작업이 성공적인 수행이 아니더라도 작업이 완료되면, then()을 불러온다. then() 다음에 .catch()를 생성하고 error를 출력해라. (Promises)
+    // .then(response => console.log(response))  // response 이름은 자유롭게 작명가능, 콘솔에서 보면 body가 ReadableStream으로 되어있다.이것은 2진수이며 JSON형식으로 바꿔야한다.
+    .then(response => response.json())  // then function은 1개의 attribute만 있다.
+    .then(json => console.log(json))
+    .catch(err => console.log(err)) // = .catch(function(err){console.log(err)}) 위의 라인에 에러가 있으면 error를 보여줘라
+
   }
 
   _renderMovies = () => {   // 함수앞에 _ 붙이는 이유 : 리액트 자체 함수가 많기 때문에 자신이 만든 함수랑 구분 짓기 위해서임
