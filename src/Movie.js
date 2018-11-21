@@ -1,6 +1,7 @@
 // import React, { Component } from 'react';   functional컴포넌트로 변경했기 때문에 component 삭제
 import React from 'react';
 import PropTypes from 'prop-types'; // node에서 yarn add prop-types 설치하고 import
+import LinesEllipsis from 'react-lines-ellipsis'
 import './Movie.css';
 
 // class Movie extends Component{   // smart컴포넌트와 dumb컴포넌트의 차이는 state가 있고 없고 차이이다.
@@ -27,17 +28,23 @@ import './Movie.css';
 function Movie({title, poster, genres, synopsis}){  // props이름을 title, poster라고 지음,
   return (
     <div className="Movie">
-        <div className="Movie__Columns">
+        <div className="Movie__Column">
             <MoviePoster poster={poster} alt={title}/>  {/* class가 아니니까 this.props.poster가 아님, functional컴포넌트에선 this props를 삭제해야 함 */}
         </div>
-        <div className="Movie__Columns">
+        <div className="Movie__Column">
             <h1>{title}</h1> {/* JSX의 경우 명령을 실행시키려면 중괄호를 꼭 쳐야한다. */}
             <div className="Movie__Genres">
                 {genres.map((genre, index) => <MovieGenre genre={genre} key={index} />)}
             </div>
-            <p className="Movie__Synopsis">
-                {synopsis}
-            </p>
+            <div className="Movie__Synopsis">
+            <LinesEllipsis
+                text={synopsis}
+                maxLine='3'
+                ellipsis='...'
+                trimRight
+                basedOn='letters'
+                />
+            </div>
         </div>
     </div>
   )

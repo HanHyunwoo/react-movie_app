@@ -66,7 +66,7 @@ class App extends Component {
   }
 
   _callApi = () => {  // _callApi는 fetch Promises를 리턴할거라서 fetch 앞에 return 을 붙인다.
-    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=like_count') // fetch : url을 AJAX로 간단하게 불러올 수 있어서 좋음
+    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=download_count') // fetch : url을 AJAX로 간단하게 불러올 수 있어서 좋음
     // then()은 위의 작업이 성공적인 수행이 아니더라도 작업이 완료되면, then()을 불러온다. then() 다음에 .catch()를 생성하고 error를 출력해라. (Promises)
     // .then(response => console.log(response))  // response 이름은 자유롭게 작명가능, 콘솔에서 보면 body가 ReadableStream으로 되어있다.이것은 2진수이며 JSON형식으로 바꿔야한다.
     .then(response => response.json())  // then function은 1개의 attribute만 있다.
@@ -77,8 +77,9 @@ class App extends Component {
 
   // 컴포넌트가 리액트 세계에 '존재'하게 되었음을 알게되었다.
   render() {
+    const {movies} = this.state;
     return (
-      <div className="App">
+      <div className={movies ? "App" : "App--loading"}>
         {this.state.movies ? this._renderMovies() : 'Loading'} {/*찾고 있는 데이터(this.state.movies)가 있는지 확인 */}
       </div>
     );
