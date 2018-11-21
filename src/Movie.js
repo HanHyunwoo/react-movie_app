@@ -24,11 +24,21 @@ import './Movie.css';
 // }
 
 // 위의 class Movie컴포넌트를 functional컴포넌트로 변경
-function Movie({title, poster}){  // props이름을 title, poster라고 지음,
+function Movie({title, poster, genres, synopsis}){  // props이름을 title, poster라고 지음,
   return (
-    <div>
-      <MoviePoster poster={poster}/>  {/* class가 아니니까 this.props.poster가 아님, functional컴포넌트에선 this props를 삭제해야 함 */}
-      <h1>{title}</h1> {/* JSX의 경우 명령을 실행시키려면 중괄호를 꼭 쳐야한다. */}
+    <div className="Movie">
+        <div className="Movie__Columns">
+            <MoviePoster poster={poster} alt={title}/>  {/* class가 아니니까 this.props.poster가 아님, functional컴포넌트에선 this props를 삭제해야 함 */}
+        </div>
+        <div className="Movie__Columns">
+            <h1>{title}</h1> {/* JSX의 경우 명령을 실행시키려면 중괄호를 꼭 쳐야한다. */}
+            <div className="Movie__Genres">
+                {genres.map((genre, index) => <MovieGenre genre={genre} key={index} />)}
+            </div>
+            <p className="Movie__Synopsis">
+                {synopsis}
+            </p>
+        </div>
     </div>
   )
 }
@@ -50,23 +60,35 @@ function Movie({title, poster}){  // props이름을 title, poster라고 지음,
 
 // 이 component는 component will mount, function, update state, .. 필요가 없음, 한개의 props만 있으면 됨
 // 단지 return을 하기위해 존재함. 그리고 state가 없다는 것을 기억~!!! 그리고 function render와 라이프사이클도 없음!!
-function MoviePoster({poster}){   // stateless functional component = dumb컴포넌트 임
+function MoviePoster({poster, alt}){   // stateless functional component = dumb컴포넌트 임
   return (
-    <img src={poster} alt="img" /> // function 컴포넌트는 클래스가 아니기 때문에 this.props. 지우고 poster만 남김
+    <img src={poster} alt={alt} title={alt} className="Movie__Poster"/> // function 컴포넌트는 클래스가 아니기 때문에 this.props. 지우고 poster만 남김
+  )
+}
+
+function MovieGenre({genre}){
+  return (
+    <span className="Movie__Genre">{genre}</span>
   )
 }
 
 // Movie컴포넌트 prop types 확인방법
 Movie.propTypes = {
   title: PropTypes.string.isRequired,
-  poster: PropTypes.string.isRequired
+  poster: PropTypes.string.isRequired,
+  genres: PropTypes.array.isRequired,
+  synopsis: PropTypes.string.isRequired
 }
 
 // MoviePoster컴포넌트 prop types 확인방법
 MoviePoster.propTypes = {
-  poster: PropTypes.string.isRequired
+  poster: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired
 }
 
+MovieGenre.propTypes = {
+  genre: PropTypes.string.isRequired
+}
 
 
 export default Movie

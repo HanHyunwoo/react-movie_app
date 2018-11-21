@@ -47,7 +47,13 @@ class App extends Component {
     const movies = this.state.movies.map(movie =>{  // key값으로 index를 준다. index 0부터 시작
       //console.log(movie)
       // 이전까지는 movie오브젝트를 만들었지만 json data에 맞게끔 이름 변경. 그리고 key를 index에서 id로 변경. 컴포넌트 key를 인덱스로 사용하면 느려서 좋지 않다.
-      return <Movie title={movie.title} poster={movie.large_cover_image} key={movie.id} />
+      return <Movie
+        title={movie.title_english}
+        poster={movie.medium_cover_image}
+        key={movie.id}
+        genres={movie.genres}
+        synopsis={movie.synopsis}
+      />
     })
     return movies
   }
