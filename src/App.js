@@ -40,21 +40,33 @@ class App extends Component {
 
   // https://yts.am/api(YTS토렌트 영화)에서 데이터베이스를 가져올거임
   componentDidMount(){
-    fetch('https://yts.am/api/v2/list_movies.json?sort_by=like_count') // fetch : url을 AJAX로 간단하게 불러올 수 있어서 좋음
-
-    // then()은 위의 작업이 성공적인 수행이 아니더라도 작업이 완료되면, then()을 불러온다. then() 다음에 .catch()를 생성하고 error를 출력해라. (Promises)
-    // .then(response => console.log(response))  // response 이름은 자유롭게 작명가능, 콘솔에서 보면 body가 ReadableStream으로 되어있다.이것은 2진수이며 JSON형식으로 바꿔야한다.
-    .then(response => response.json())  // then function은 1개의 attribute만 있다.
-    .then(json => console.log(json))
-    .catch(err => console.log(err)) // = .catch(function(err){console.log(err)}) 위의 라인에 에러가 있으면 error를 보여줘라
-
+    this._getMovies(); // 이렇게 쓰는 이유는 사이즈가 크면 좋은 코딩방법이 아니다. 왜냐면 많은 function을 불러올건데 몰아있는것보다 분기 된 것이 좋다
   }
 
   _renderMovies = () => {   // 함수앞에 _ 붙이는 이유 : 리액트 자체 함수가 많기 때문에 자신이 만든 함수랑 구분 짓기 위해서임
-    const movies = this.state.movies.map((movie, index) =>{  // key값으로 index를 준다. index 0부터 시작
-      return <Movie title={movie.title} poster={movie.poster} key={index} />
+    const movies = this.state.movies.map(movie =>{  // key값으로 index를 준다. index 0부터 시작
+      //console.log(movie)
+      // 이전까지는 movie오브젝트를 만들었지만 json data에 맞게끔 이름 변경. 그리고 key를 index에서 id로 변경. 컴포넌트 key를 인덱스로 사용하면 느려서 좋지 않다.
+      return <Movie title={movie.title} poster={movie.large_cover_image} key={movie.id} />
     })
     return movies
+  }
+
+  _getMovies = async () => { // async비동기= 이전작업이 끝날때까지 기다리는 것이 아니다. async를 안쓰면 await가 작동하지 않는다.
+    const movies  = await this._callApi()  // await는 성공적인 수행이 아니라 단지 끝나기를 기다리는 거다. _callApi가 완료되지 않으면 다음줄 실행되지 않는다.
+    this.setState({
+      movies   // <- 요즘 자바스크립트..  = movies : movies
+    })
+  }
+
+  _callApi = () => {  // _callApi는 fetch Promises를 리턴할거라서 fetch 앞에 return 을 붙인다.
+    return fetch('https://yts.am/api/v2/list_movies.json?sort_by=like_count') // fetch : url을 AJAX로 간단하게 불러올 수 있어서 좋음
+    // then()은 위의 작업이 성공적인 수행이 아니더라도 작업이 완료되면, then()을 불러온다. then() 다음에 .catch()를 생성하고 error를 출력해라. (Promises)
+    // .then(response => console.log(response))  // response 이름은 자유롭게 작명가능, 콘솔에서 보면 body가 ReadableStream으로 되어있다.이것은 2진수이며 JSON형식으로 바꿔야한다.
+    .then(response => response.json())  // then function은 1개의 attribute만 있다.
+    //.then(json => console.log(json))
+    .then(json => json.data.movies) // 바로 윗줄 콘솔로그를 개발도구로 보면 json데이터에 data안에 movies값이 있다. 이것을 리턴한다.
+    .catch(err => console.log(err)) // = .catch(function(err){console.log(err)}) 위의 라인에 에러가 있으면 error를 보여줘라
   }
 
   // 컴포넌트가 리액트 세계에 '존재'하게 되었음을 알게되었다.
