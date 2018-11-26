@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'; // node에서 yarn add prop-types 설치하�
 import LinesEllipsis from 'react-lines-ellipsis'
 import './Movie.css';
 
+var rank=0;
+
 // class Movie extends Component{   // smart컴포넌트와 dumb컴포넌트의 차이는 state가 있고 없고 차이이다.
 //   // 부모 컴포넌트로부터 받는 데이터 타입 설정 ,
 //   // isRequired : movie컴포넌트는 title이라는 prop을 제공하는 것이 필수이다.
@@ -32,14 +34,16 @@ function Movie({title, poster, genres, synopsis}){  // props이름을 title, pos
             <MoviePoster poster={poster} alt={title}/>  {/* class가 아니니까 this.props.poster가 아님, functional컴포넌트에선 this props를 삭제해야 함 */}
         </div>
         <div className="Movie__Column">
-            <h1>{title}</h1> {/* JSX의 경우 명령을 실행시키려면 중괄호를 꼭 쳐야한다. */}
+            <h1>{MovieRank()}. {title}</h1> {/* JSX의 경우 명령을 실행시키려면 중괄호를 꼭 쳐야한다. */}
+            <div>Genre</div>
             <div className="Movie__Genres">
                 {genres.map((genre, index) => <MovieGenre genre={genre} key={index} />)}
             </div>
+            <div>Content</div>
             <div className="Movie__Synopsis">
             <LinesEllipsis
                 text={synopsis}
-                maxLine='3'
+                maxLine='5'
                 ellipsis='...'
                 trimRight
                 basedOn='letters'
@@ -77,6 +81,11 @@ function MovieGenre({genre}){
   return (
     <span className="Movie__Genre">{genre}</span>
   )
+}
+
+function MovieRank(){
+  rank++;
+  return rank //(<span className="Movie__Rank">{rank}</span>)
 }
 
 // Movie컴포넌트 prop types 확인방법
